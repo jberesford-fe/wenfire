@@ -13,10 +13,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi_htmx import htmx, htmx_init
 
 from .fire import InputData, ParameterChange, Summary, calculate_results_for_month
-from .plots import (
-    plot_age_vs_net_worth,
-    plot_monthly_financial_flows,
-)
+from .plots import plot_age_vs_net_worth, plot_monthly_financial_flows
 
 FOLDER = Path(__file__).parent.resolve()
 
@@ -41,11 +38,11 @@ DEFAULT_EXTRA_SPENDING = 0
 # Choices for parameter select boxes used across templates
 PARAMETER_CHOICES: list[tuple[str, str]] = [
     ("growth_rate", "📈 Investment Growth Rate (%)"),
-    ("spending_per_month", "🛒 Monthly Spending ($)"),
+    ("spending_per_month", "🛒 Monthly Spending (£)"),
     ("inflation", "💰 Inflation Rate (%)"),
     ("annual_salary_increase", "📊 Annual Salary Increase (%)"),
-    ("income_per_month", "💵 Monthly Income ($)"),
-    ("extra_income", "💎 Extra Monthly Income ($)"),
+    ("income_per_month", "💵 Monthly Income (£)"),
+    ("extra_income", "💎 Extra Monthly Income (£)"),
 ]
 
 # Expose frequently-used helpers & constants to every template once
@@ -130,17 +127,17 @@ async def remove_parameter_row():
 
 
 def format_currency(value):
-    """Format currency values in compact notation (e.g., $2.5M, $800k)"""
+    """Format currency values in compact notation (e.g., £2.5M, £800k)"""
     if value < 1_000:
-        return f"${value:.0f}"
+        return f"£{value:.0f}"
     elif value < 100_000:
-        return f"${value / 1_000:.1f}k"
+        return f"£{value / 1_000:.1f}k"
     elif value < 1_000_000:
-        return f"${value / 1_000:.0f}k"
+        return f"£{value / 1_000:.0f}k"
     elif value < 10_000_000:
-        return f"${value / 1_000_000:.1f}M"
+        return f"£{value / 1_000_000:.1f}M"
     else:
-        return f"${value / 1_000_000:.0f}M"
+        return f"£{value / 1_000_000:.0f}M"
 
 
 def interpolate_color(
